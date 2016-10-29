@@ -31,11 +31,14 @@ public class LoginService {
             String token = getMD5(phone + password + System.currentTimeMillis());
             Map<String,Object> responseBody = new HashMap<String, Object>();
             responseBody.put("token",token);
-            responseBody.put("user_id",user.getId());
+            responseBody.put("uid",user.getId());
+            String tmpPhone = phone.substring(0,3) + "xxxx" + phone.substring(7,11);
+
+            responseBody.put("phone",tmpPhone);
             logEventService.recieve(new LogEvent(phone,"登录成功"));
             baseResponse = new BaseResponse(0,"登录成功!",responseBody);
         }else{
-            baseResponse = new BaseResponse(4001,"账号密码不匹配!",null);
+            baseResponse = new BaseResponse(-1,"账号密码不匹配!",null);
         }
         return baseResponse;
     }

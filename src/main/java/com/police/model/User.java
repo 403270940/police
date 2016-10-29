@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User {
     @Id
-    private int Id;
+    private int id;
     private String phone;
     private String password;
 
@@ -21,7 +21,10 @@ public class User {
     }
 
     public int getId() {
-        return Id;
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 
 

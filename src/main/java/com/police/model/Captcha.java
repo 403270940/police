@@ -15,7 +15,9 @@ public class Captcha {
     private String phone;
     private String captcha;
     private Date created_at;
+    public Captcha(){
 
+    }
     public Captcha(String phone,String captcha) {
         this.phone = phone;
         this.captcha = captcha;

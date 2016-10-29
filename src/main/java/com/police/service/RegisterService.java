@@ -31,8 +31,8 @@ public class RegisterService {
         return user != null;
     }
 
-    public BaseResponse modifyPasswd(String phone,String oldPassword,String newPassword){
-        User user = registerRepository.findByPhone(phone);
+    public BaseResponse resetpassword(int uid,String oldPassword,String newPassword){
+        User user = registerRepository.findById(uid);
         if(oldPassword.equals(user.getPassword())){
             user.setPassword(newPassword);
             registerRepository.save(user);
@@ -41,29 +41,42 @@ public class RegisterService {
         return new BaseResponse(4101,"原始密码错误",null);
     }
 
+    public BaseResponse forgotpassword(String phone,String password,String captcha,int captchaId){
+        Captcha captcha1 = captchaRepository.findOne(captchaId);
+        if(captcha1 == null || !captcha1.getCaptcha().equals(captcha)){
+            return new BaseResponse(-1,"验证码错误!",null);
+        }
+        User user = registerRepository.findByPhone(phone);
+        user.setPassword(password);
+        registerRepository.save(user);
+        return new BaseResponse(0,"修改密码成功",null);
+    }
+
     public BaseResponse getCaptcha(String phone){
         String src = "0123456789";
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
-        for(int i = 0 ; i < 6; i ++){
-            int index = random.nextInt(src.length());
-            sb.append(src.charAt(index));
-        }
+//        for(int i = 0 ; i < 6; i ++){
+//            int index = random.nextInt(src.length());
+//            sb.append(src.charAt(index));
+//        }
+        sb.append("123456");
         Captcha captcha = new Captcha(phone,sb.toString());
         captchaRepository.save(captcha);
         Map<String,Object> resultMap = new HashMap<String, Object>();
-        resultMap.put("id",captcha.getId());
+        resultMap.put("captchaId",captcha.getId());
         resultMap.put("captcha",captcha.getCaptcha());
         return new BaseResponse(0,"",resultMap);
     }
 
-    public BaseResponse register(String phone,String password){
+    public BaseResponse register(String phone,String password,String captcha,int captchaId){
+        Captcha captcha1 = captchaRepository.findOne(captchaId);
+        if(captcha1 == null || !captcha1.getCaptcha().equals(captcha)){
+            return new BaseResponse(-1,"验证码错误!",null);
+        }
         User user = new User(phone,password);
-        if(existPhone(phone))
-            return new BaseResponse(1001,"已存在该账号",null);
         registerRepository.save(user);
         Map<String,String> responseData = new HashMap<String, String>();
-        responseData.put("token","123456");
         BaseResponse baseResponse = new BaseResponse(0,"注册成功!",responseData);
         logEventService.recieve(new LogEvent(phone, "注册成功"));
         return baseResponse;

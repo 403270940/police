@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by liyy on 16/10/20.
  */
@@ -42,16 +39,27 @@ public class RegisterController {
     @ResponseBody
     public BaseResponse register(@RequestParam(value = "phone") String phone,
                                  @RequestParam(value = "password") String password,
-                                 @RequestParam(value = "captcha") int captcha){
-        return registerService.register(phone,password);
+                                 @RequestParam(value = "captcha") String captcha,
+                                 @RequestParam(value = "captchaId") int captchaId
+                                 ){
+        return registerService.register(phone,password,captcha,captchaId);
     }
 
-    @RequestMapping(value = "modifypasswd",method = RequestMethod.POST)
+    @RequestMapping(value = "resetpassword",method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse modifyPasswd(@RequestParam(value = "phone") String phone,
-                                     @RequestParam(value = "oldpassword") String password,
+    public BaseResponse resetpassword(@RequestParam(value = "uid") int uid,
+                                      @RequestParam(value = "oldpassword") String password,
                                      @RequestParam(value = "newpassword") String newpassword){
-        return registerService.modifyPasswd(phone,password,newpassword);
+        return registerService.resetpassword(uid, password, newpassword);
+    }
+
+    @RequestMapping(value = "forgotpassword",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse forgotpassword(@RequestParam(value = "phone") String phone,
+                                       @RequestParam(value = "password") String password,
+                                       @RequestParam(value = "captcha") String captcha,
+                                       @RequestParam(value = "captchaId") int captchaId){
+        return registerService.forgotpassword(phone, password, captcha, captchaId);
     }
 }
 
