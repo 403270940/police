@@ -24,4 +24,11 @@ public class LoginController {
                               @RequestParam(value="password",defaultValue = "")String password){
         return loginService.login(phone, password);
     }
+
+
+    @RequestMapping(value = "logout",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse login(@RequestParam(value="uid",defaultValue = "")int uid){
+        return loginService.logout(uid);
+    }
 }

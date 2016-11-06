@@ -49,6 +49,7 @@ public class RegisterService {
         User user = registerRepository.findByPhone(phone);
         user.setPassword(password);
         registerRepository.save(user);
+        captchaRepository.delete(captcha1);
         return new BaseResponse(0,"修改密码成功",null);
     }
 
@@ -74,8 +75,14 @@ public class RegisterService {
         if(captcha1 == null || !captcha1.getCaptcha().equals(captcha)){
             return new BaseResponse(-1,"验证码错误!",null);
         }
+        boolean existPhone = existPhone(phone);
+        if(existPhone){
+            BaseResponse baseResponse = new BaseResponse(-1,"手机号已被占用!","");
+            return  baseResponse;
+        }
         User user = new User(phone,password);
         registerRepository.save(user);
+        captchaRepository.delete(captcha1);
         Map<String,String> responseData = new HashMap<String, String>();
         BaseResponse baseResponse = new BaseResponse(0,"注册成功!",responseData);
         logEventService.recieve(new LogEvent(phone, "注册成功"));

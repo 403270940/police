@@ -1,8 +1,10 @@
 package com.police.service;
 
+import com.police.dao.LogInfoRepository;
 import com.police.model.LogEvent;
 import com.police.dao.UserRepository;
 import com.police.model.BaseResponse;
+import com.police.model.LogInfo;
 import com.police.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class LoginService {
     @Autowired
     LogEventService logEventService;
 
+    @Autowired
+    LogInfoRepository logInfoRepository;
+
     public BaseResponse login(String phone,String password){
         BaseResponse baseResponse;
         User user = userRepository.findByPhone(phone);
@@ -34,6 +39,11 @@ public class LoginService {
             responseBody.put("uid",user.getId());
             String tmpPhone = phone.substring(0,3) + "xxxx" + phone.substring(7,11);
 
+
+            LogInfo logInfo = new LogInfo(user.getId(),token);
+            logInfoRepository.save(logInfo);
+
+
             responseBody.put("phone",tmpPhone);
             logEventService.recieve(new LogEvent(phone,"登录成功"));
             baseResponse = new BaseResponse(0,"登录成功!",responseBody);
@@ -42,6 +52,22 @@ public class LoginService {
         }
         return baseResponse;
     }
+
+
+    public BaseResponse logout(int uid){
+        BaseResponse baseResponse;
+        LogInfo logInfo = logInfoRepository.findByUid(uid);
+        if(logInfo != null){
+            logInfoRepository.delete(logInfo);
+            User user = userRepository.findById(Integer.valueOf(uid));
+            logEventService.recieve(new LogEvent(user.getPhone(),"退出成功"));
+            baseResponse = new BaseResponse(0,"退出成功!",null);
+        }else{
+            baseResponse = new BaseResponse(-1,"退出失败!",null);
+        }
+        return baseResponse;
+    }
+
 
     public static String getMD5(String str) {
         try {

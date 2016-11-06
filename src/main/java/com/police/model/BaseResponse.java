@@ -1,5 +1,8 @@
 package com.police.model;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+
 /**
  * Created by liyy on 16/10/20.
  */
@@ -38,4 +41,5 @@ public class BaseResponse {
     public void setData(Object data) {
         this.data = data;
     }
+
 }
