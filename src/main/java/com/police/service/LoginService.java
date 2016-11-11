@@ -48,7 +48,7 @@ public class LoginService {
             logEventService.recieve(new LogEvent(phone,"登录成功"));
             baseResponse = new BaseResponse(0,"登录成功!",responseBody);
         }else{
-            baseResponse = new BaseResponse(-1,"账号密码不匹配!",null);
+            baseResponse = new BaseResponse(-1,"账号密码不匹配!");
         }
         return baseResponse;
     }
@@ -61,9 +61,9 @@ public class LoginService {
             logInfoRepository.delete(logInfo);
             User user = userRepository.findById(Integer.valueOf(uid));
             logEventService.recieve(new LogEvent(user.getPhone(),"退出成功"));
-            baseResponse = new BaseResponse(0,"退出成功!",null);
+            baseResponse = new BaseResponse(0,"退出成功!");
         }else{
-            baseResponse = new BaseResponse(-1,"退出失败!",null);
+            baseResponse = new BaseResponse(-1,"退出失败!");
         }
         return baseResponse;
     }

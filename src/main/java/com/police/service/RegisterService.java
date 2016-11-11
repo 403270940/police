@@ -36,31 +36,27 @@ public class RegisterService {
         if(oldPassword.equals(user.getPassword())){
             user.setPassword(newPassword);
             registerRepository.save(user);
-            return new BaseResponse(0,"修改成功",null);
+            return new BaseResponse(0,"修改成功");
         }
-        return new BaseResponse(4101,"原始密码错误",null);
+        return new BaseResponse(4101,"原始密码错误");
     }
 
     public BaseResponse forgotpassword(String phone,String password,String captcha,int captchaId){
         Captcha captcha1 = captchaRepository.findOne(captchaId);
         if(captcha1 == null || !captcha1.getCaptcha().equals(captcha)){
-            return new BaseResponse(-1,"验证码错误!",null);
+            return new BaseResponse(-1,"验证码错误!");
         }
         User user = registerRepository.findByPhone(phone);
         user.setPassword(password);
         registerRepository.save(user);
         captchaRepository.delete(captcha1);
-        return new BaseResponse(0,"修改密码成功",null);
+        return new BaseResponse(0,"修改密码成功");
     }
 
     public BaseResponse getCaptcha(String phone){
         String src = "0123456789";
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
-//        for(int i = 0 ; i < 6; i ++){
-//            int index = random.nextInt(src.length());
-//            sb.append(src.charAt(index));
-//        }
         sb.append("123456");
         Captcha captcha = new Captcha(phone,sb.toString());
         captchaRepository.save(captcha);
@@ -73,7 +69,7 @@ public class RegisterService {
     public BaseResponse register(String phone,String password,String captcha,int captchaId){
         Captcha captcha1 = captchaRepository.findOne(captchaId);
         if(captcha1 == null || !captcha1.getCaptcha().equals(captcha)){
-            return new BaseResponse(-1,"验证码错误!",null);
+            return new BaseResponse(-1,"验证码错误!");
         }
         boolean existPhone = existPhone(phone);
         if(existPhone){
