@@ -1,9 +1,7 @@
 package com.police.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by liyy on 16/10/17.
@@ -12,6 +10,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String phone;
     private String password;

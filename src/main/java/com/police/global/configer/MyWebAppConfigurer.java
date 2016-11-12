@@ -14,7 +14,7 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authorityInterceptor()).addPathPatterns("/api/logout");
+        registry.addInterceptor(authorityInterceptor()).addPathPatterns("/api/**").excludePathPatterns("/api/register", "/api/getcaptcha", "/api/checkphone","/api/forgotpassword","/api/login");;
     }
 
     @Bean

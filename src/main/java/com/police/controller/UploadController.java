@@ -1,8 +1,6 @@
 package com.police.controller;
 
 import com.police.model.BaseResponse;
-import com.police.service.AnnouncementService;
-import com.police.service.ThemeService;
 import com.police.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

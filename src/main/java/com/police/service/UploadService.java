@@ -23,9 +23,9 @@ public class UploadService {
     LogEventService logEventService;
 
     public BaseResponse uploadImage(String uid,String location,String createTime,MultipartFile image,String comment) throws Exception{
-        String orginalFilename = image.getName();
+        String orginalFilename = image.getOriginalFilename();
         String splits[] = orginalFilename.split("\\.");
-        String filepath = "image/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy-MM-dd_HH:mm:ss") + "." + splits[splits.length - 1];
+        String filepath = "/home/li/police/image/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy-MM-dd_HH:mm:ss") + "." + splits[splits.length - 1];
         image.transferTo(new File(filepath));
         UploadModel uploadModel = new UploadModel(uid,location,new Date(Long.valueOf(createTime)),filepath,comment,"image");
         uploadRepository.save(uploadModel);
@@ -36,7 +36,7 @@ public class UploadService {
     public BaseResponse uploadVideo(String uid,String location,String createTime,MultipartFile video,String comment) throws Exception{
         String orginalFilename = video.getOriginalFilename();
         String splits[] = orginalFilename.split("\\.");
-        String filepath = "video/" + uid + "_" + createTime + "." + splits[splits.length - 1];
+        String filepath = "/home/li/police/video/" + uid + "_" + createTime + "." + splits[splits.length - 1];
         video.transferTo(new File(filepath));
         UploadModel uploadModel = new UploadModel(uid,location,new Date(Long.valueOf(createTime)),filepath,comment,"video");
         uploadRepository.save(uploadModel);
