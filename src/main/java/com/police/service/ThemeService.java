@@ -1,65 +1,115 @@
-//package com.police.service;
-//
-//import com.police.dao.ReplyRepository;
-//import com.police.dao.ThemeRepository;
-//import com.police.dao.UserRepository;
-//import com.police.model.BaseResponse;
-//import com.police.model.Reply;
-//import com.police.model.ResponseModel.ThemeSummary;
-//import com.police.model.Theme;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Date;
-//import java.util.List;
-//import java.util.Map;
-//
-///**
-// * Created by liyy on 16/11/9.
-// */
-//@Service
-//public class ThemeService {
-//    @Autowired
-//    ThemeRepository themeRepository;
-//    @Autowired
-//    UserRepository userRepository;
-//    @Autowired
-//    ReplyRepository replyRepository;
-//
-//    public BaseResponse getThemeDetail() {
-//        List<Theme> themeList = themeRepository.findAll();
-//        for(Theme theme : themeList){
-//            ThemeSummary themeSummary = new ThemeSummary();
-//            themeSummary.setId(theme.getId());
-//            themeSummary.setTitle(theme.getTitle());
-////            String phone = userRepository.findById(theme.getUid());
-////            themeSummary.se();
-//        }
-//        return new BaseResponse(0,"",themeList);
-//    }
-//
-//    public BaseResponse getThemeDetail(String id) {
-//        Theme theme = themeRepository.findById(Integer.valueOf(id));
-//        return null;
-//    }
-//
-//    public BaseResponse createThemeReply(String uid, String themeId, String bizId, String createTime, String comment) {
-//        Reply reply = new Reply();
-//        reply.setUid(Integer.valueOf(uid));
-//        reply.setThemeid(Integer.valueOf(themeId));
-//        reply.setBizid(Integer.valueOf(bizId));
-//        reply.setCreateTime(new Date(Long.valueOf(createTime)));
-//        reply.setComment(comment);
-//        replyRepository.save(reply);
-//        return new BaseResponse(0,"");
-//    }
-//
-//    public BaseResponse createTheme(String uid, String title, String createTime) {
-//        Theme theme = new Theme();
-//        theme.setUid(Integer.valueOf(uid));
-//        theme.setTitle(title);
-//        theme.setCreateTime(new Date(Long.valueOf(createTime)));
-//        themeRepository.save(theme);
-//        return new BaseResponse(0,"");
-//    }
-//}
+package com.police.service;
+
+import com.police.dao.ReplyRepository;
+import com.police.dao.ThemeRepository;
+import com.police.dao.UserRepository;
+import com.police.model.BaseResponse;
+import com.police.model.Reply;
+import com.police.model.Theme;
+import com.police.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+/**
+ * Created by liyy on 16/11/9.
+ */
+@Service
+public class ThemeService {
+    @Autowired
+    ThemeRepository themeRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ReplyRepository replyRepository;
+
+    /*
+    **  themeid
+    *   title
+    *   creator
+    *   createTime
+    *   commentCount
+     */
+    public BaseResponse getThemeSumary() {
+        List<Theme> themeList = themeRepository.findAll();
+        List<Map<String,String>> resultMap = new ArrayList<Map<String,String>>();
+        for(Theme theme : themeList){
+            User user = userRepository.findById(theme.getUid());
+            String phone = user.getPhone();
+            int commentCount = replyRepository.countByThemeid(theme.getId());
+            Map<String,String> result = new HashMap<String, String>();
+            result.put("themeId",theme.getId() + "");
+            result.put("title",theme.getTitle());
+            result.put("creator",phone);
+            result.put("createTime",theme.getCreateTime().getTime() + "");
+            result.put("commnetCount",commentCount + "");
+            resultMap.add(result);
+        }
+        return new BaseResponse(0,"",resultMap);
+    }
+
+    /*
+    **  themeId
+    *   title
+    *   creator
+    *   createTime
+    *   commentCount
+    *   comments:
+    *       id
+    *       bizId
+    *       customer
+    *       createTime
+    *       comment
+     */
+    public BaseResponse getThemeDetail(String id) {
+        Theme theme = themeRepository.findById(Integer.valueOf(id));
+        List<Reply> replyList = replyRepository.findByThemeid(theme.getId());
+        Map<String,Object> result = new HashMap<String, Object>();
+        result.put("themeId",theme.getId());
+        result.put("title",theme.getTitle());
+        result.put("creator",theme.getCreator());
+        result.put("createTime",theme.getCreateTime().getTime() + "");
+        result.put("commnetCount",replyList.size());
+        List<Map<String,String>> replies = new ArrayList<Map<String, String>>();
+        for(Reply reply : replyList){
+            Map<String,String> replyResult = new HashMap<String, String>();
+            replyResult.put("id",reply.getId() + "");
+            replyResult.put("bizId",reply.getBizid() + "");
+            replyResult.put("customer",reply.getCustomer());
+            replyResult.put("createTime",reply.getCreateTime().getTime() + "");
+            replyResult.put("comment",reply.getComment());
+            replies.add(replyResult);
+        }
+        result.put("commnets",replies);
+        return new BaseResponse(0,"",result);
+    }
+
+    public BaseResponse createThemeReply(String uid, String themeId, String bizId, String createTime, String comment) {
+        Reply reply = new Reply();
+        reply.setUid(Integer.valueOf(uid));
+        User user = userRepository.findById(Integer.valueOf(uid));
+        String phone = user.getPhone();
+        String tmpPhone = phone.substring(0,3) + "xxxx" + phone.substring(7,11);
+        reply.setCustomer(tmpPhone);
+        reply.setThemeid(Integer.valueOf(themeId));
+        reply.setBizid(Integer.valueOf(bizId));
+        reply.setCreateTime(new Date(Long.valueOf(createTime)));
+        reply.setComment(comment);
+        replyRepository.save(reply);
+        return new BaseResponse(0,"");
+    }
+
+    public BaseResponse createTheme(String uid, String title, String createTime) {
+        Theme theme = new Theme();
+        theme.setUid(Integer.valueOf(uid));
+        User user = userRepository.findById(Integer.valueOf(uid));
+        String phone = user.getPhone();
+        String tmpPhone = phone.substring(0,3) + "xxxx" + phone.substring(7,11);
+        theme.setCreator(tmpPhone);
+        theme.setTitle(title);
+        theme.setCreateTime(new Date(Long.valueOf(createTime)));
+        themeRepository.save(theme);
+        return new BaseResponse(0,"");
+    }
+}

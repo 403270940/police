@@ -15,6 +15,7 @@ public class Theme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int uid;
+    private String creator;
     private String title;
     private Date createTime;
 
@@ -40,6 +41,14 @@ public class Theme {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public Date getCreateTime() {

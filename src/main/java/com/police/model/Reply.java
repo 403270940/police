@@ -13,6 +13,7 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int uid;
+    private String customer;
     private int themeid;
     private int bizid;
     private String comment;
@@ -48,6 +49,14 @@ public class Reply {
 
     public void setBizid(int bizid) {
         this.bizid = bizid;
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
     }
 
     public String getComment() {
