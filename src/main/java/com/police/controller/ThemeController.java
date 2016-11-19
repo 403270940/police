@@ -34,9 +34,9 @@ public class ThemeController {
 
     @RequestMapping(value = "forum/theme/reply",method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse getThemeReply(@RequestParam(value = "uid",defaultValue = "") String uid,
-                                      @RequestParam(value = "themeId",defaultValue = "") String themeId,
-                                      @RequestParam(value = "bizId",defaultValue = "") String bizId,
+    public BaseResponse getThemeReply(@RequestParam(value = "uid",defaultValue = "") int uid,
+                                      @RequestParam(value = "themeId",defaultValue = "") int themeId,
+                                      @RequestParam(value = "bizId",defaultValue = "") int bizId,
                                       @RequestParam(value = "createTime",defaultValue = "") String createTime,
                                       @RequestParam(value = "comment",defaultValue = "") String comment){
         return themeService.createThemeReply(uid, themeId, bizId, createTime, comment);
@@ -45,10 +45,10 @@ public class ThemeController {
 
     @RequestMapping(value = "forum/theme/create",method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse createTheme(@RequestParam(value = "uid",defaultValue = "") String uid,
-                                      @RequestParam(value = "title",defaultValue = "") String themeId,
+    public BaseResponse createTheme(@RequestParam(value = "uid",defaultValue = "") int uid,
+                                      @RequestParam(value = "title",defaultValue = "") String title,
                                       @RequestParam(value = "createTime",defaultValue = "") String createTime){
-        return themeService.createTheme(uid, themeId, createTime);
+        return themeService.createTheme(uid, title, createTime);
 
     }
 

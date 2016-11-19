@@ -6,6 +6,7 @@ import com.police.model.LogEvent;
 import com.police.model.UploadModel;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,27 +22,30 @@ public class UploadService {
     UploadRepository uploadRepository;
     @Autowired
     LogEventService logEventService;
-
+    @Autowired
+    Environment env;
     public BaseResponse uploadImage(String uid,String location,String createTime,MultipartFile image,String comment) throws Exception{
+        String uploadfolder = env.getProperty("uploadfolder");
         String orginalFilename = image.getOriginalFilename();
         String splits[] = orginalFilename.split("\\.");
-        String filepath = "/home/li/police/image/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy-MM-dd_HH:mm:ss") + "." + splits[splits.length - 1];
+        String filepath = uploadfolder + "/image/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy-MM-dd_HH:mm:ss") + "." + splits[splits.length - 1];
         image.transferTo(new File(filepath));
         UploadModel uploadModel = new UploadModel(uid,location,new Date(Long.valueOf(createTime)),filepath,comment,"image");
         uploadRepository.save(uploadModel);
         logEventService.recieve(new LogEvent(uid, "上传图片成功"));
-        return new BaseResponse(0,"",null);
+        return new BaseResponse(0,"上传图片成功");
     }
 
     public BaseResponse uploadVideo(String uid,String location,String createTime,MultipartFile video,String comment) throws Exception{
+        String uploadfolder = env.getProperty("uploadfolder");
         String orginalFilename = video.getOriginalFilename();
         String splits[] = orginalFilename.split("\\.");
-        String filepath = "/home/li/police/video/" + uid + "_" + createTime + "." + splits[splits.length - 1];
+        String filepath = uploadfolder + "/video/" + uid + "_" + createTime + "." + splits[splits.length - 1];
         video.transferTo(new File(filepath));
         UploadModel uploadModel = new UploadModel(uid,location,new Date(Long.valueOf(createTime)),filepath,comment,"video");
         uploadRepository.save(uploadModel);
         logEventService.recieve(new LogEvent(uid, "上传视频成功"));
-        return new BaseResponse(0,"");
+        return new BaseResponse(0,"上传视频成功");
     }
 
     public BaseResponse getImageSummary(String uid) {

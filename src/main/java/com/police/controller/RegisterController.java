@@ -21,8 +21,8 @@ public class RegisterController {
     @RequestMapping(value = "getcaptcha",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse getCaptcha(@RequestParam(value = "phone") String phone){
-        return registerService.getCaptcha(phone);
-
+        BaseResponse baseResponse = registerService.getCaptcha(phone);
+        return baseResponse;
     }
 
     @RequestMapping(value = "checkphone",method = RequestMethod.POST)

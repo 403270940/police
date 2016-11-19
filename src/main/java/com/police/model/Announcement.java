@@ -1,7 +1,5 @@
 package com.police.model;
 
-import org.jboss.logging.annotations.Field;
-
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Date;
@@ -16,9 +14,9 @@ public class Announcement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
-    private Blob content;
+    private String content;
 
-    @Column(name = "create_at")
+    @Column(name = "created_at")
     private Date createdTime;
     public Announcement(){
 
@@ -40,11 +38,11 @@ public class Announcement {
         this.title = title;
     }
 
-    public Blob getContent() {
+    public String getContent() {
         return content;
     }
 
-    public void setContent(Blob content) {
+    public void setContent(String content) {
         this.content = content;
     }
 

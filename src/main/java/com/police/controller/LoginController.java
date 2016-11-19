@@ -4,10 +4,7 @@ import com.police.model.BaseResponse;
 import com.police.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by liyy on 16/10/24.
@@ -28,7 +25,9 @@ public class LoginController {
 
     @RequestMapping(value = "logout",method = RequestMethod.POST)
     @ResponseBody
-    public BaseResponse login(@RequestParam(value="uid",defaultValue = "")int uid){
-        return loginService.logout(uid);
+    public BaseResponse logout(@RequestParam(value="uid",defaultValue = "")int uid,
+                                @RequestHeader(value="User-Token") String user_token){
+
+        return loginService.logout(uid,user_token);
     }
 }

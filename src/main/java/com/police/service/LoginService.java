@@ -54,12 +54,12 @@ public class LoginService {
     }
 
 
-    public BaseResponse logout(int uid){
+    public BaseResponse logout(int uid,String user_token){
         BaseResponse baseResponse;
-        LogInfo logInfo = logInfoRepository.findByUid(uid);
+        LogInfo logInfo = logInfoRepository.findByUidAndToken(uid,user_token);
         if(logInfo != null){
             logInfoRepository.delete(logInfo);
-            User user = userRepository.findById(Integer.valueOf(uid));
+            User user = userRepository.findById(uid);
             logEventService.recieve(new LogEvent(user.getPhone(),"退出成功"));
             baseResponse = new BaseResponse(0,"退出成功!");
         }else{

@@ -1,6 +1,7 @@
 package com.police.dao;
 
 import com.police.model.LogInfo;
+import com.police.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -9,4 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface LogInfoRepository extends PagingAndSortingRepository<LogInfo,Integer>{
     LogInfo findByUid(int uid);
     LogInfo findByToken(String token);
+    LogInfo findByUidAndToken(int id,String token);
+
 }

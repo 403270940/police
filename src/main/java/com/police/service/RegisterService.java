@@ -54,8 +54,6 @@ public class RegisterService {
     }
 
     public BaseResponse getCaptcha(String phone){
-        String src = "0123456789";
-        Random random = new Random();
         StringBuilder sb = new StringBuilder();
         sb.append("123456");
         Captcha captcha = new Captcha(phone,sb.toString());
