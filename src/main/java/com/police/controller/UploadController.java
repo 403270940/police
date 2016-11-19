@@ -35,7 +35,7 @@ public class UploadController {
     public BaseResponse uploadVideo(@RequestParam(value = "uid",defaultValue = "") String uid,
                                     @RequestParam(value = "location",defaultValue = "") String location,
                                     @RequestParam(value = "createTime",defaultValue = "") String createTime,
-                                    @RequestParam(value = "image",defaultValue = "") MultipartFile video,
+                                    @RequestParam(value = "video",defaultValue = "") MultipartFile video,
                                     @RequestParam(value = "comment",defaultValue = "") String comment) throws Exception{
         return uploadService.uploadVideo(uid, location, createTime, video, comment);
 

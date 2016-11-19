@@ -43,7 +43,7 @@ public class ThemeService {
             result.put("title",theme.getTitle());
             result.put("creator",phone);
             result.put("createTime",theme.getCreateTime().getTime() + "");
-            result.put("commnetCount",commentCount + "");
+            result.put("commentCount",commentCount + "");
             resultMap.add(result);
         }
         return new BaseResponse(0,"",resultMap);
@@ -71,7 +71,7 @@ public class ThemeService {
         themeMap.put("title",theme.getTitle());
         themeMap.put("creator",theme.getCreator());
         themeMap.put("createTime",theme.getCreateTime().getTime() + "");
-        themeMap.put("commnetCount",replyList.size());
+        themeMap.put("commentCount",replyList.size());
         List<Map<String,String>> replies = new ArrayList<Map<String, String>>();
         for(Reply reply : replyList){
             Map<String,String> replyResult = new HashMap<String, String>();

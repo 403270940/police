@@ -79,7 +79,7 @@ public class UploadTest {
     @Test
     public void testVideo() throws Exception{
 //        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(baseUrl + "/api/checkphone").param("phone","13818154818");
-        String result = mockMvc.perform(fileUpload(baseUrl + "/api/video").file(new MockMultipartFile("image","blog.jpg","text/plain",new FileInputStream("blog.jpg")))
+        String result = mockMvc.perform(fileUpload(baseUrl + "/api/video").file(new MockMultipartFile("video","blog.jpg","text/plain",new FileInputStream("blog.jpg")))
                 .header("User-Token", "3542032b1b693463834a0080f9503485")
                 .param("uid", "1")
                 .param("location", "上海市浦东区")
