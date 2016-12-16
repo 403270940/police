@@ -4,9 +4,14 @@ import com.police.dao.UploadRepository;
 import com.police.model.BaseResponse;
 import com.police.model.LogEvent;
 import com.police.model.UploadModel;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +29,12 @@ public class UploadService {
     LogEventService logEventService;
     @Autowired
     Environment env;
+
+    public BaseResponse uploadList(){
+        return new BaseResponse(0,"");
+    }
+
+
     public BaseResponse uploadImage(String uid,String location,String createTime,MultipartFile image,String comment) throws Exception{
         String uploadfolder = env.getProperty("uploadfolder");
         String orginalFilename = image.getOriginalFilename();
@@ -75,7 +86,7 @@ public class UploadService {
     }
 
     public BaseResponse getVideoSummary(String uid) {
-        List<UploadModel> uploadModelList = uploadRepository.findByUidAndType(uid,"video");
+        List<UploadModel> uploadModelList = uploadRepository.findByUidAndType(uid, "video");
         List<Map<String,String>> resultList = new ArrayList<Map<String, String>>();
         for(UploadModel uploadModel : uploadModelList){
             Map<String,String> result = new HashMap<String, String>();
@@ -95,7 +106,9 @@ public class UploadService {
         result.put("video",uploadModel.getComment());
         result.put("createTime",uploadModel.getCreateTime());
         result.put("image", org.aspectj.util.FileUtil.readAsByteArray(new File(uploadModel.getFilepath())));
-        result.put("location",uploadModel.getLocation());
+        result.put("location", uploadModel.getLocation());
         return new BaseResponse(0,"",result);
     }
+
+
 }

@@ -54,7 +54,7 @@ public class LoginTest {
     public void testLogout() throws Exception{
 //        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(baseUrl + "/api/checkphone").param("phone","13818154818");
         String result = mockMvc.perform(post(baseUrl + "/api/logout")
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token", "2745b6a2e41857e00ffecfb7fa79d554")
                 .param("uid", "2"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();

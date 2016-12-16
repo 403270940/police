@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class UploadTest {
     private String baseUrl = "http://localhost:12344";
+    private String token = "2745b6a2e41857e00ffecfb7fa79d554";
     MockMvc mockMvc;
     @Autowired
     WebApplicationContext wac;
@@ -44,7 +45,7 @@ public class UploadTest {
     public void testImage() throws Exception{
 //        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(baseUrl + "/api/checkphone").param("phone","13818154818");
         String result = mockMvc.perform(fileUpload(baseUrl + "/api/image").file(new MockMultipartFile("image","blog.jpg","text/plain",new FileInputStream("blog.jpg")))
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token",token)
                 .param("uid", "1")
                 .param("location", "上海市浦东区")
                 .param("createTime", new Date().getTime() + "")
@@ -58,7 +59,7 @@ public class UploadTest {
     @Test
     public void testImageSummary() throws Exception{
         String result = mockMvc.perform(post(baseUrl + "/api/image/summary")
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token", token)
                 .param("uid", "1"))
                         .andReturn().getResponse().getContentAsString();
         System.out.println(result);
@@ -67,7 +68,7 @@ public class UploadTest {
     @Test
     public void testImageDetail() throws Exception{
         String result = mockMvc.perform(post(baseUrl + "/api/image/detail")
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token", token)
                 .param("uid", "1")
                 .param("id", "1"))
                 .andReturn().getResponse().getContentAsString();
@@ -80,7 +81,7 @@ public class UploadTest {
     public void testVideo() throws Exception{
 //        MockHttpServletRequestBuilder mockHttpServletRequestBuilder = MockMvcRequestBuilders.post(baseUrl + "/api/checkphone").param("phone","13818154818");
         String result = mockMvc.perform(fileUpload(baseUrl + "/api/video").file(new MockMultipartFile("video","blog.jpg","text/plain",new FileInputStream("blog.jpg")))
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token", token)
                 .param("uid", "1")
                 .param("location", "上海市浦东区")
                 .param("createTime", new Date().getTime() + "")
@@ -94,7 +95,7 @@ public class UploadTest {
     @Test
     public void testVideoSummary() throws Exception{
         String result = mockMvc.perform(post(baseUrl + "/api/video/summary")
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token", token)
                 .param("uid", "1"))
                 .andReturn().getResponse().getContentAsString();
         System.out.println(result);
@@ -103,7 +104,7 @@ public class UploadTest {
     @Test
     public void testVideoDetail() throws Exception{
         String result = mockMvc.perform(post(baseUrl + "/api/video/detail")
-                .header("User-Token", "3542032b1b693463834a0080f9503485")
+                .header("User-Token", token)
                 .param("uid", "1")
                 .param("id", "2"))
                 .andReturn().getResponse().getContentAsString();

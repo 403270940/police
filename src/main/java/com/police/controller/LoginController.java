@@ -6,16 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
+
 /**
  * Created by liyy on 16/10/24.
  */
 @Controller
-@RequestMapping("/api")
+@RequestMapping("")
 public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @RequestMapping(value = "login",method = RequestMethod.POST)
+    @RequestMapping(value = "api/login",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse login(@RequestParam(value="phone",defaultValue = "")String phone,
                               @RequestParam(value="password",defaultValue = "")String password){
@@ -23,7 +27,7 @@ public class LoginController {
     }
 
 
-    @RequestMapping(value = "logout",method = RequestMethod.POST)
+    @RequestMapping(value = "api/logout",method = RequestMethod.POST)
     @ResponseBody
     public BaseResponse logout(@RequestParam(value="uid",defaultValue = "")int uid,
                                 @RequestHeader(value="User-Token") String user_token){

@@ -29,6 +29,8 @@ public class LoginService {
     @Autowired
     LogInfoRepository logInfoRepository;
 
+
+
     public BaseResponse login(String phone,String password){
         BaseResponse baseResponse;
         User user = userRepository.findByPhone(phone);
@@ -39,10 +41,8 @@ public class LoginService {
             responseBody.put("uid",user.getId());
             String tmpPhone = phone.substring(0,3) + "xxxx" + phone.substring(7,11);
 
-
             LogInfo logInfo = new LogInfo(user.getId(),token);
             logInfoRepository.save(logInfo);
-
 
             responseBody.put("phone",tmpPhone);
             logEventService.recieve(new LogEvent(phone,"登录成功"));

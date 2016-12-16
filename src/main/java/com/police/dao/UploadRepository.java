@@ -12,5 +12,7 @@ import java.util.List;
 public interface UploadRepository extends PagingAndSortingRepository<UploadModel,Integer> {
     List<UploadModel> findAll();
     List<UploadModel> findByUidAndType(String uid,String type);
+    List<UploadModel> findByType(String type);
     UploadModel findByUidAndIdAndType(String uid,int id,String type);
+    UploadModel findById(Integer id);
 }
