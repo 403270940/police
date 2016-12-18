@@ -7,15 +7,15 @@ var getImage = function(pageNo){
         url:"/admin/api/theme/summary?page="+pageNo,
         method:'GET'
     }).done(function (data) {
-        showImageList(data)
+        showThemeList(data)
     });
 }
 
-var showImageList = function(data){
+var showThemeList = function(data){
     var images = data.data;
     var themes = "";
     $.each(images,function(index,item){
-        themes += '<div class="theme" data="'+item.theme.themeid+'" id="theme'+index+'">';
+        themes += '<div class="theme" data="'+item.theme.themeId+'" id="theme'+index+'">';
         themes += '<div class="header">';
         themes += '<label class="col-md-2 name">'+item.theme.creator+'</label>';
         themes += '<label class="col-md-2 date">'+moment(new Date(parseInt(item.theme.createTime))).format("YYYY-MM-DD HH:mm:ss")+'</label>';
@@ -45,18 +45,18 @@ var reply = function(index){
     var uid = $("ul #uid").attr("data");
     var bizId = $("#theme"+index +" .reply").length;
     var createTime = Date.parse(new Date());
-    var comment = $("#theme"+index + " textarea").text();
+    var comment = $("#theme"+index + " textarea").val();
     $.ajax({
-        url: "/forum/theme/reply",
+        url: "/admin/forum/theme/reply",
         method: 'POST',
         data: {
             uid: uid,
-            themeid: id,
+            themeId: id,
             bizId: bizId,
             createTime: createTime,
             comment: comment
         }
     }).done(function(data){
-        alert(data.msg);
+        $(".main").load("/admin/theme");
     });
 }

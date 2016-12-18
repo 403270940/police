@@ -107,7 +107,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = "api/logout",method = RequestMethod.POST)
+    @RequestMapping(value = "api/logout")
     @ResponseBody
     public BaseResponse logout(HttpServletRequest request ,HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
@@ -199,6 +199,14 @@ public class AdminController {
         return "user";
     }
 
-
+    @RequestMapping(value = "forum/theme/reply",method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResponse getThemeReply(@RequestParam(value = "uid",defaultValue = "") int uid,
+                                      @RequestParam(value = "themeId",defaultValue = "") int themeId,
+                                      @RequestParam(value = "bizId",defaultValue = "") int bizId,
+                                      @RequestParam(value = "createTime",defaultValue = "") String createTime,
+                                      @RequestParam(value = "comment",defaultValue = "") String comment){
+        return adminService.createThemeReply(uid, themeId, bizId, createTime, comment);
+    }
 
 }

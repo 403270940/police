@@ -222,4 +222,19 @@ public class AdminService {
         String phone = user.getPhone();
         return phone;
     }
+
+    public BaseResponse createThemeReply(int uid, int themeId, int bizId, String createTime, String comment) {
+        Reply reply = new Reply();
+        reply.setUid(uid);
+        AdminUser user = adminUserRepository.findById(uid);
+        String phone = user.getPhone();
+        String tmpPhone = phone.substring(0,3) + "xxxx" + phone.substring(7,11);
+        reply.setCustomer(tmpPhone);
+        reply.setThemeid(themeId);
+        reply.setBizid(bizId);
+        reply.setCreateTime(new Date(Long.valueOf(createTime)));
+        reply.setComment(comment);
+        replyRepository.save(reply);
+        return new BaseResponse(0,"");
+    }
 }
