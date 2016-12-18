@@ -1,11 +1,14 @@
 package com.police.controller;
 
+import com.police.model.Announcement;
 import com.police.model.BaseResponse;
 import com.police.model.UploadModel;
 import com.police.service.AdminService;
+import com.police.service.ThemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +27,8 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     AdminService adminService;
+    @Autowired
+    ThemeService themeService;
 
     @RequestMapping(value = "index")
     public String upload(){
@@ -45,6 +50,14 @@ public class AdminController {
         return "notice";
     }
 
+    @RequestMapping(value = "noticedetail")
+    public String noticeDetail(@RequestParam(value="id",defaultValue = "1") int id,Model model){
+        Announcement announcement = adminService.getNoticeDetail(id);
+        model.addAttribute("title",announcement.getTitle());
+        model.addAttribute("content",announcement.getContent());
+        return "noticedetail";
+    }
+
     @RequestMapping(value = "welcome")
     public String welcome(){
         return "welcome";
@@ -54,6 +67,13 @@ public class AdminController {
     @ResponseBody
     public BaseResponse userList(@RequestParam(value = "pageNo",defaultValue = "") int pageNo) throws Exception{
         return adminService.userList();
+    }
+
+    @RequestMapping(value = "api/theme/summary")
+    @ResponseBody
+    public BaseResponse getThemeSummary(){
+        return adminService.getAllTheme();
+
     }
 
     @RequestMapping(value = "api/login",method = RequestMethod.POST)
@@ -126,6 +146,13 @@ public class AdminController {
     public BaseResponse imageList(@RequestParam(value="pageNo",defaultValue = "1") int pageNo){
         return adminService.getImageList(pageNo);
     }
+
+    @RequestMapping(value = "api/noticelist")
+    @ResponseBody
+    public BaseResponse noticeList(@RequestParam(value="pageNo",defaultValue = "1") int pageNo){
+        return adminService.getNoticeList(pageNo);
+    }
+
 
     @RequestMapping(value = "api/image/delete")
     @ResponseBody

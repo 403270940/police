@@ -11,4 +11,5 @@ import java.util.List;
  */
 public interface AnnouncementRepository extends PagingAndSortingRepository<Announcement,Integer> {
     List<Announcement> findAll();
+    Announcement findById(int id);
 }

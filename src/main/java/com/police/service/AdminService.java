@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by liyy on 16/12/10.
@@ -33,7 +31,13 @@ public class AdminService {
     @Autowired
     AdminTokenRepository adminTokenRepository;
     @Autowired
+    ThemeRepository themeRepository;
+    @Autowired
+    ReplyRepository replyRepository;
+    @Autowired
     LogEventService logEventService;
+    @Autowired
+    AnnouncementRepository announcementRepository;
 
     public BaseResponse adminLogin(String phone,String password){
         BaseResponse baseResponse;
@@ -155,5 +159,55 @@ public class AdminService {
         AdminToken adminToken = adminTokenRepository.findByToken(token);
         adminTokenRepository.delete(adminToken);
         return new BaseResponse(0,"退出成功!");
+    }
+
+    public BaseResponse getAllTheme() {
+        List<Theme> themes = themeRepository.findAll();
+        List<Map<String,Object>> datas = Lists.newArrayList();
+        for(Theme theme : themes){
+            List<Reply> replyList = replyRepository.findByThemeid(theme.getId());
+            Map<String,Object> result = new HashMap<String, Object>();
+            Map<String,Object> themeMap = new HashMap<String, Object>();
+            themeMap.put("themeId",theme.getId());
+            themeMap.put("title",theme.getTitle());
+            themeMap.put("creator",theme.getCreator());
+            themeMap.put("createTime",theme.getCreateTime().getTime() + "");
+            themeMap.put("commentCount",replyList.size());
+            List<Map<String,String>> replies = new ArrayList<Map<String, String>>();
+            for(Reply reply : replyList){
+                Map<String,String> replyResult = new HashMap<String, String>();
+                replyResult.put("id",reply.getId() + "");
+                replyResult.put("bizId",reply.getBizid() + "");
+                replyResult.put("customer",reply.getCustomer());
+                replyResult.put("createTime",reply.getCreateTime().getTime() + "");
+                replyResult.put("comment",reply.getComment());
+                replies.add(replyResult);
+            }
+            result.put("theme",themeMap);
+            result.put("comments",replies);
+            datas.add(result);
+        }
+
+        return new BaseResponse(0,"",datas);
+    }
+
+    public BaseResponse getNoticeList(int pageNo) {
+        List<Announcement> announcements = announcementRepository.findAll();
+        List<Map<String,Object>> announcementlist = Lists.newArrayList();
+        for(Announcement announcement : announcements){
+            Map<String,Object> announcementMap = Maps.newHashMap();
+            announcementMap.put("id",announcement.getId());
+            announcementMap.put("title",announcement.getTitle());
+            announcementMap.put("createTime",announcement.getCreatedTime());
+            announcementMap.put("replycount",replyRepository.countByThemeid(announcement.getId()));
+            announcementlist.add(announcementMap);
+        }
+        BaseResponse baseResponse = new BaseResponse(0,"",announcementlist);
+        return baseResponse;
+    }
+
+    public Announcement getNoticeDetail(int id){
+        Announcement announcement = announcementRepository.findById(id);
+        return announcement;
     }
 }
