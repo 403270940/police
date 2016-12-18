@@ -210,4 +210,16 @@ public class AdminService {
         Announcement announcement = announcementRepository.findById(id);
         return announcement;
     }
+
+    public int getUid(String token) {
+        AdminToken adminToken = adminTokenRepository.findByToken(token);
+        int uid = adminToken.getUid();
+        return uid;
+    }
+
+    public String getPhone(int uid) {
+        AdminUser user = adminUserRepository.findById(uid);
+        String phone = user.getPhone();
+        return phone;
+    }
 }

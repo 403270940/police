@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>后台模板管理系统</title>
@@ -12,16 +12,15 @@
 </head>
 
 <body>
-<div class="top"></div>
+<div class="top" uid="123"></div>
 <div id="header">
     <div class="logo">便民警务后台管理系统</div>
     <div class="navigation">
         <ul>
             <li>欢迎您！</li>
-            <li><a href="">张山</a></li>
-            <li><a href="">修改密码</a></li>
-            <li><a href="">设置</a></li>
+            <li><a href="" th:text="${phone}">张山</a></li>
             <li><a href="/admin/api/logout">退出</a></li>
+            <li id="uid" th:data="${uid}" style="visibility: hidden;"></li>
         </ul>
     </div>
 </div>
@@ -57,9 +56,7 @@
             <ul>
                 <li><img src="/images/home.png"/></li>
                 <li style="margin-left:25px;">您当前的位置：</li>
-                <li><a href="#">系统公告</a></li>
-                <li>></li>
-                <li><a href="#">最新公告</a></li>
+                <li><a href="#" id="position">首页</a></li>
             </ul>
         </div>
         <div class="main">
@@ -71,12 +68,12 @@
 <div id="footer"><p>便民服务</p></div>
 <script>
     navList(12);
-    $("#main").click(function(){$(".main").load("/admin/welcome");});
-    $("#notice").click(function(){$(".main").load("/admin/notice");});
-    $("#theme").click(function(){$(".main").load("/admin/theme");});
-    $("#image").click(function(){loadmain("/admin/image");});
-    $("#video").click(function(){loadmain("/admin/video");});
-    $("#user").click(function(){loadmain("/admin/user");});
+    $("#main").click(function(){$(".main").load("/admin/welcome");$("#position").text("首页");});
+    $("#notice").click(function(){$(".main").load("/admin/notice");$("#position").text("警务公告");});
+    $("#theme").click(function(){$(".main").load("/admin/theme");$("#position").text("警务交流");});
+    $("#image").click(function(){loadmain("/admin/image");$("#position").text("违法举报");});
+    $("#video").click(function(){loadmain("/admin/video");$("#position").text("违法举报");});
+    $("#user").click(function(){loadmain("/admin/user");$("#position").text("用户管理");});
 
     var loadmain = function(address){
         $.ajax({

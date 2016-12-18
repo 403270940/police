@@ -54,8 +54,6 @@ CREATE TABLE `announcement` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='公告表';
 
-
-
 drop table if exists theme;
 CREATE TABLE `theme` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -89,3 +87,25 @@ CREATE TABLE `upload` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='上传记录表'
+
+drop table if EXISTS admintoken;
+CREATE TABLE `admintoken` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL,
+  `token` varchar(50) NOT NULL COMMENT 'token',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '失效时间',
+  `token_fail_time` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='token表'
+
+drop table if EXISTS adminuser;
+CREATE TABLE `adminuser` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `phone` varchar(20) NOT NULL COMMENT '手机号',
+  `password` varchar(50) NOT NULL COMMENT '密码',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_UNIQUE` (`phone`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='管理员表';

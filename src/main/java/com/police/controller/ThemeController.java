@@ -40,7 +40,6 @@ public class ThemeController {
                                       @RequestParam(value = "createTime",defaultValue = "") String createTime,
                                       @RequestParam(value = "comment",defaultValue = "") String comment){
         return themeService.createThemeReply(uid, themeId, bizId, createTime, comment);
-
     }
 
     @RequestMapping(value = "forum/theme/create",method = RequestMethod.POST)

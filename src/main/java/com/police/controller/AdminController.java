@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,18 @@ public class AdminController {
     ThemeService themeService;
 
     @RequestMapping(value = "index")
-    public String upload(){
+    public String index(HttpServletRequest request,Model model){
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("User-Token")){
+                token = cookie.getValue();
+            }
+        }
+        int uid = adminService.getUid(token);
+        String phone = adminService.getPhone(uid);
+        model.addAttribute("uid",uid);
+        model.addAttribute("phone",phone);
         return "index";
     }
 
