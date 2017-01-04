@@ -4,14 +4,9 @@ import com.police.dao.UploadRepository;
 import com.police.model.BaseResponse;
 import com.police.model.LogEvent;
 import com.police.model.UploadModel;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +34,7 @@ public class UploadService {
         String uploadfolder = env.getProperty("uploadfolder");
         String orginalFilename = image.getOriginalFilename();
         String splits[] = orginalFilename.split("\\.");
-        String filepath = uploadfolder + "/image/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy-MM-dd_HH:mm:ss") + "." + splits[splits.length - 1];
+        String filepath = uploadfolder + "/image/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy_MM_dd_HH_mm_ss") + "." + splits[splits.length - 1];
         image.transferTo(new File(filepath));
         UploadModel uploadModel = new UploadModel(uid,location,new Date(Long.valueOf(createTime)),filepath,comment,"image");
         uploadRepository.save(uploadModel);
@@ -51,7 +46,7 @@ public class UploadService {
         String uploadfolder = env.getProperty("uploadfolder");
         String orginalFilename = video.getOriginalFilename();
         String splits[] = orginalFilename.split("\\.");
-        String filepath = uploadfolder + "/video/" + uid + "_" + createTime + "." + splits[splits.length - 1];
+        String filepath = uploadfolder + "/video/" + uid + "_" + DateFormatUtils.format(new Date(Long.valueOf(createTime)), "yyyy_MM_dd_HH_mm_ss") + "." + splits[splits.length - 1];
         video.transferTo(new File(filepath));
         UploadModel uploadModel = new UploadModel(uid,location,new Date(Long.valueOf(createTime)),filepath,comment,"video");
         uploadRepository.save(uploadModel);

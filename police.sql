@@ -86,7 +86,7 @@ CREATE TABLE `upload` (
   `type` varchar(20) NOT NULL COMMENT '类型',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='上传记录表'
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='上传记录表';
 
 drop table if EXISTS admintoken;
 CREATE TABLE `admintoken` (
@@ -97,7 +97,7 @@ CREATE TABLE `admintoken` (
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '失效时间',
   `token_fail_time` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='token表'
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='token表';
 
 drop table if EXISTS adminuser;
 CREATE TABLE `adminuser` (

@@ -22,7 +22,7 @@ var showImageList = function(data){
         trs+="<td>" + item.comment + "</td>";
         trs+="<td>" + item.location + "</td>";
         trs+="<td>";
-        trs+="<button>查看</button>";
+        trs+="<button onclick='showImage(\"/admin/api/upload/download?id="+item.id+"\")'>查看</button>";
         trs+="<button onclick='window.open(\"/admin/api/upload/download?id="+item.id+"\")'>下载</button>";
         trs+="<button onclick='window.open(\"/admin/api/upload/delete?id="+item.id+"\")'>删除</button>";
         trs+="</td>";
@@ -30,3 +30,13 @@ var showImageList = function(data){
     });
     $("#imageBody").html(trs);
 };
+
+
+var showImage = function(url){
+    var body = "<div><img src='"+url+"'/></div>";
+    $(".modal-body").html(body);
+    $(".modal-title").text("图片");
+    $('#myModal').modal({
+        keyboard: true
+    })
+}
